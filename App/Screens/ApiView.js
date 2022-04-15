@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, Button, FlatList, ActivityIndicator , TextInput} from 'react-native';
 import styles from './ApiStyles';
+
 const ApiView = (props) => {
     const { searchText,goForFetch, goForAxios, fromFetch, fromAxios, axiosData, renderItem, FlatListItemSeparator, dataSource, loading } = props
     return (

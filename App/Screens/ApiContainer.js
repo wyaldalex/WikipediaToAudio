@@ -8,6 +8,8 @@ import {
     TouchableOpacity,
     TextInput
 } from "react-native";
+import Tts from 'react-native-tts'
+
 class ApiContainer extends Component {
     constructor(props) {
         super(props);
@@ -38,8 +40,9 @@ class ApiContainer extends Component {
                         axiosData: response.data.query.pages[pageId].extract
                     })
                 }, 2000)
-            })
-            .catch(error => {
+            }).then(                
+                Tts.speak(this.state.axiosData)                           
+            ).catch(error => {
                 console.log(error);
             });
     }
