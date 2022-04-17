@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     TextInput
 } from "react-native";
-import Tts from 'react-native-tts'
+import * as Speech from 'expo-speech'
 
 class ApiContainer extends Component {
     constructor(props) {
@@ -33,19 +33,29 @@ class ApiContainer extends Component {
             .then(response => {
                 //var key = "9228";
                 var pageId = Object.keys(response.data.query.pages)[0];
-                console.log('getting data from axios', response.data.query.pages[pageId].extract);
+                let textForSpeech = response.data.query.pages[pageId].extract.replace(/=/g, '');
+                //let textForSpeech = response.data.query.pages[pageId].extract.replace(/\=[\s\S]+/m, "")
+                //var textForSpeech2 = textForSpeech.replace(/\=[\s\S]+/m, "bar")
+                console.log('getting data from axios',textForSpeech);
+                Speech.stop()
+                //To do run speak for each 3999 chars segment of the article                
+                Speech.speak(textForSpeech.slice(0, 3999))
                 setTimeout(() => {
                     this.setState({
                         loading: false,
                         axiosData: response.data.query.pages[pageId].extract
-                    })
-                }, 2000)
-            }).then(                
-                Tts.speak(this.state.axiosData)                           
-            ).catch(error => {
+                    })                   
+                }, 2000)               
+            })                                
+            .catch(error => {
                 console.log(error);
             });
     }
+
+    stopSpeech = () => {
+        Speech.stop()
+    }    
+
     FlatListSeparator = () => {
         return (
             <View style={{
@@ -71,17 +81,19 @@ class ApiContainer extends Component {
         const { text,dataSource, fromFetch, fromAxios, loading, axiosData } = this.state
         return (
             <View style={{padding: 10}}>
+
             <TextInput
             style={{ margin: 40, fontSize:18 }}
             placeholder="Search Term"
             onChangeText={(searchText) => this.setState({searchText})}
             value={this.state.searchText}
             inlineImageLeft='search_icon'
-          />
+          />         
             <ApiView
                 searchText={this.searchText}                
                 goForFetch={this.goForFetch}                
                 goForAxios={this.goForAxios}
+                stopSpeech={this.stopSpeech}
                 dataSource={dataSource}
                 loading={loading}
                 fromFetch={fromFetch}

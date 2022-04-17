@@ -25,6 +25,14 @@ const styles = {
         paddingVertical: 4,
         margin: 5,
         backgroundColor: "#fff"
-    }
+    },
+    halfHeight: {
+        flex: 0.5,
+        backgroundColor: "#FF3366",
+      },
+      quarterHeight: {
+        flex: 0.25,
+        backgroundColor: "#000",
+      }
 };
 export default styles;

@@ -3,7 +3,7 @@ import { View, Text, Button, FlatList, ActivityIndicator , TextInput} from 'reac
 import styles from './ApiStyles';
 
 const ApiView = (props) => {
-    const { searchText,goForFetch, goForAxios, fromFetch, fromAxios, axiosData, renderItem, FlatListItemSeparator, dataSource, loading } = props
+    const { searchText,goForFetch, goForAxios,stopSpeech, fromFetch, fromAxios, axiosData, renderItem, FlatListItemSeparator, dataSource, loading } = props
     return (
       <View style={styles.parentContainer}>
         <View>
@@ -19,6 +19,11 @@ const ApiView = (props) => {
             onPress={goForAxios}
             color="green"
           />
+          <Button
+            title={"Stop"}
+            onPress={stopSpeech}
+            color="red"
+          />                 
         </View>
         <Text>{axiosData}</Text>
         
