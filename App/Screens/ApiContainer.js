@@ -22,6 +22,29 @@ class ApiContainer extends Component {
             searchText: 'Search Term'
         };
     }
+
+     chunkSubstr(str, size) {
+        const numChunks = Math.ceil(str.length / size)
+        const chunks = new Array(numChunks)
+      
+        for (let i = 0, o = 0; i < numChunks; ++i, o += size) {
+          chunks[i] = str.substr(o, size)
+        }
+      
+        return chunks
+      }    
+
+    runSpeech (rawText) {
+
+        //Split text to run on all text
+        //Speech.speak(rawText.slice(0, 3999))
+        var chunks = this.chunkSubstr(rawText, 3999)
+        //Speech.speak(chunks[0])
+        chunks.forEach(element => console.log(element));
+        chunks.forEach(element => Speech.speak(element));
+        
+    }
+
     goForAxios = () => {
         this.setState({
             fromFetch: false,
@@ -38,8 +61,9 @@ class ApiContainer extends Component {
                 //var textForSpeech2 = textForSpeech.replace(/\=[\s\S]+/m, "bar")
                 console.log('getting data from axios',textForSpeech);
                 Speech.stop()
-                //To do run speak for each 3999 chars segment of the article                
-                Speech.speak(textForSpeech.slice(0, 3999))
+                //To do run speak for each 3999 chars segment of the article
+                this.runSpeech(textForSpeech)                
+                //Speech.speak(textForSpeech.slice(0, 3999))
                 setTimeout(() => {
                     this.setState({
                         loading: false,
@@ -80,14 +104,14 @@ class ApiContainer extends Component {
     render() {
         const { text,dataSource, fromFetch, fromAxios, loading, axiosData } = this.state
         return (
-            <View style={{padding: 10}}>
+            <View style={{padding: 2 , alignItems:'center', paddingVertical: 200}}>
 
             <TextInput
-            style={{ margin: 40, fontSize:18 }}
+            style={{ margin: 2, fontSize:22 ,paddingVertical: 2,  textAlign:'center',}}
             placeholder="Search Term"
             onChangeText={(searchText) => this.setState({searchText})}
             value={this.state.searchText}
-            inlineImageLeft='search_icon'
+            underlineColor="purple"
           />         
             <ApiView
                 searchText={this.searchText}                

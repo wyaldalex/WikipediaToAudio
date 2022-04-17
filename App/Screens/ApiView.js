@@ -5,28 +5,32 @@ import styles from './ApiStyles';
 const ApiView = (props) => {
     const { searchText,goForFetch, goForAxios,stopSpeech, fromFetch, fromAxios, axiosData, renderItem, FlatListItemSeparator, dataSource, loading } = props
     return (
-      <View style={styles.parentContainer}>
+      <View >
         <View>
           <Text style={styles.textStyle}>
-            Application to reproduce Wikipedia articles with Audio
+            Application to reproduce Wikipedia articles using Audio
 
           </Text>
+          <Text style={styles.textStyleWarning}>
+            Search Term has to match with wikipedia article name
+
+          </Text>          
         </View>
 
-        <View style={{ margin: 18 }}>
+        <View style={{ margin: 2}}>
           <Button
             title={"Wikipedia to Audio"}
             onPress={goForAxios}
-            color="green"
-          />
+            
+          />                
+        </View>
+        <View style={{ margin: 80 , paddingVertical: 1}}>
           <Button
             title={"Stop"}
             onPress={stopSpeech}
-            color="red"
+            color="red"            
           />                 
-        </View>
-        <Text>{axiosData}</Text>
-        
+        </View>                         
         {loading && (
           <View style={styles.loader}>
             <ActivityIndicator size="large" color="#0c9" />

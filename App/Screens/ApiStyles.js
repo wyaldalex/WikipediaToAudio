@@ -10,8 +10,14 @@ const styles = {
     textStyle:{
         fontSize:12,
         textAlign:'center',
-        paddingTop:32
+        paddingTop:1
     },
+    textStyleWarning:{
+        fontSize:12,
+        textAlign:'center',
+        paddingTop:1,
+        backgroundColor: "yellow"
+    },    
     container: {
         backgroundColor: "#fff"
     },
@@ -22,8 +28,8 @@ const styles = {
         backgroundColor: "#fff"
     },
     list: {
-        paddingVertical: 4,
-        margin: 5,
+        paddingVertical: 2,
+        margin: 1,
         backgroundColor: "#fff"
     },
     halfHeight: {
