@@ -12,7 +12,7 @@ const ApiView = (props) => {
 
           </Text>
           <Text style={styles.textStyleWarning}>
-            Search Term has to match with wikipedia article name
+            Search Term has to match with english wikipedia article name
 
           </Text>          
         </View>

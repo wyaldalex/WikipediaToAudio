@@ -40,7 +40,6 @@ class ApiContainer extends Component {
         //Speech.speak(rawText.slice(0, 3999))
         var chunks = this.chunkSubstr(rawText, 3999)
         //Speech.speak(chunks[0])
-        chunks.forEach(element => console.log(element));
         chunks.forEach(element => Speech.speak(element));
         
     }
@@ -57,13 +56,10 @@ class ApiContainer extends Component {
                 //var key = "9228";
                 var pageId = Object.keys(response.data.query.pages)[0];
                 let textForSpeech = response.data.query.pages[pageId].extract.replace(/=/g, '');
-                //let textForSpeech = response.data.query.pages[pageId].extract.replace(/\=[\s\S]+/m, "")
-                //var textForSpeech2 = textForSpeech.replace(/\=[\s\S]+/m, "bar")
                 console.log('getting data from axios',textForSpeech);
                 Speech.stop()
                 //To do run speak for each 3999 chars segment of the article
                 this.runSpeech(textForSpeech)                
-                //Speech.speak(textForSpeech.slice(0, 3999))
                 setTimeout(() => {
                     this.setState({
                         loading: false,
