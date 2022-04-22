@@ -9,11 +9,12 @@ const ApiView = (props) => {
         <View>
           <Text style={styles.textStyle}>
             Application to reproduce Wikipedia articles using Audio
-
           </Text>
           <Text style={styles.textStyleWarning}>
-            Search Term has to match with english wikipedia article name
-
+            Search Term has to match with English Wikipedia article title including Case sensitivity
+          </Text>          
+          <Text style={styles.textStyleWarning}>
+            example: Darth Vader works, darth vader won't
           </Text>          
         </View>
 
