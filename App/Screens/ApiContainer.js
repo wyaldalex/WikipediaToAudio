@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
+  ImageBackground,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import * as Speech from "expo-speech";
@@ -20,16 +21,12 @@ class ApiContainer extends Component {
       fromAxios: false,
       dataSource: [],
       axiosData: null,
-      searchText: null,
+      searchText: "",
       value: null,
       searchItems: [
         {
-          countryLabel: "Enter Search Term",
-          countryValue: "Enter Search Term",
-        },
-        {
-          countryLabel: "Enter Search Term",
-          countryValue: "Enter Search Term",
+          searchItemLabel: "Enter Search Term",
+          searchItemValue: "Enter Search Term",
         },
       ],
     };
@@ -43,12 +40,8 @@ class ApiContainer extends Component {
     this.setState({
       searchItems: [
         {
-          countryLabel: "Enter Search Term",
-          countryValue: "Enter Search Term",
-        },
-        {
-          countryLabel: "Enter Search Term",
-          countryValue: "Enter Search Term",
+          searchItemLabel: "Enter Search Term",
+          searchItemValue: "Enter Search Term",
         },
       ],
     });
@@ -70,8 +63,8 @@ class ApiContainer extends Component {
           this.setState({
             searchItems: [
               {
-                countryLabel: "Enter Search Term",
-                countryValue: "Enter Search Term",
+                searchItemLabel: "Enter Search Term",
+                searchItemValue: "Enter Search Term",
               },
             ],
           });
@@ -80,8 +73,8 @@ class ApiContainer extends Component {
           let i = 0;
           for (i = 0; i < response.data[1].length; i++) {
             newSearchItems.push({
-              countryLabel: response.data[1][i],
-              countryValue: response.data[1][i],
+              searchItemLabel: response.data[1][i],
+              searchItemValue: response.data[1][i],
             });
           }
           this.setState({
@@ -123,7 +116,7 @@ class ApiContainer extends Component {
     //axios.get("https://jsonplaceholder.typicode.com/users")
     axios
       .get(
-        `https://en.wikipedia.org/w/api.php?action=query&format=json&titles=${this.state.searchText}&prop=extracts&explaintext`
+        `https://en.wikipedia.org/w/api.php?action=query&format=json&titles=${this.state.searchItems[0].searchItemValue}&prop=extracts&explaintext`
       )
       .then((response) => {
         //var key = "9228";
@@ -175,47 +168,55 @@ class ApiContainer extends Component {
       searchItems,
     } = this.state;
     return (
-      <View style={{ padding: 2, alignItems: "center", paddingVertical: 200 }}>
-        <TextInput
-          style={{
-            margin: 2,
-            fontSize: 22,
-            paddingVertical: 2,
-            textAlign: "center",
-          }}
-          placeholder="Search Term"
-          onChangeText={(searchText) => this.setSearchTerm(searchText)}
-          value={this.state.searchText}
-          underlineColor="purple"
-        />
-        <Picker
-          selectedValue={value}
-          onValueChange={(value, index) => this.setDropdown(value)}
-          //mode="dropdown" // Android only
-          style={styles2.picker}
+      <View style={styles2.container}>
+        <ImageBackground
+          source={require("../../assets/wikipediaLogo.png")}
+          resizeMode="cover"
+          style={styles2.image}
         >
-          <Picker.Item label="Select Matching Article" value="Unknown" />
+          <TextInput
+            style={{
+              margin: 2,
+              fontSize: 22,
+              paddingVertical: 2,
+              textAlign: "center",
+              backgroundColor: "#ffffff",
+            }}
+            placeholder="Search Term"
+            placeholderTextColor="#483d8b"
+            onChangeText={(searchText) => this.setSearchTerm(searchText)}
+            onEndEditing={(searchText) => searchItems[1].searchItemLabel}
+            value={this.state.searchText}
+            underlineColor="purple"
+          />
+          <Picker
+            selectedValue={value}
+            onValueChange={(value, index) => this.setDropdown(value)}
+            dropdownIconColor="green"
+            //mode="dropdown" // Android only
+            style={styles2.picker}
+          >
+            {searchItems.map((searchItem) => (
+              <Picker.Item
+                label={searchItem.searchItemLabel}
+                value={searchItem.searchItemValue}
+              />
+            ))}
+          </Picker>
 
-          {searchItems.map((searchItem) => (
-            <Picker.Item
-              label={searchItem.countryLabel}
-              value={searchItem.countryValue}
-            />
-          ))}
-        </Picker>
-
-        <ApiView
-          searchText={this.searchText}
-          goForFetch={this.goForFetch}
-          goForAxios={this.goForAxios}
-          stopSpeech={this.stopSpeech}
-          dataSource={dataSource}
-          loading={loading}
-          fromFetch={fromFetch}
-          fromAxios={fromAxios}
-          axiosData={axiosData}
-          FlatListSeparator={this.FlatListSeparator}
-        />
+          <ApiView
+            searchText={this.searchText}
+            goForFetch={this.goForFetch}
+            goForAxios={this.goForAxios}
+            stopSpeech={this.stopSpeech}
+            dataSource={dataSource}
+            loading={loading}
+            fromFetch={fromFetch}
+            fromAxios={fromAxios}
+            axiosData={axiosData}
+            FlatListSeparator={this.FlatListSeparator}
+          />
+        </ImageBackground>
       </View>
     );
   }
@@ -241,6 +242,16 @@ const styles2 = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#666",
     margin: 4,
+    alignItems: "center",
+    transform: [{ scaleX: 1.1 }, { scaleY: 1.1 }],
+  },
+  image: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
   },
 });
