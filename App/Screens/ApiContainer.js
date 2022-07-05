@@ -22,7 +22,7 @@ class ApiContainer extends Component {
       dataSource: [],
       axiosData: null,
       searchText: "",
-      value: null,
+      value: "",
       searchItems: [
         {
           searchItemLabel: "Enter Search Term",
@@ -34,17 +34,17 @@ class ApiContainer extends Component {
 
   setDropdown(val) {
     console.log("Value from dropdown:" + val);
-    this.setState({
-      searchText: val,
-    });
-    this.setState({
-      searchItems: [
-        {
-          searchItemLabel: "Enter Search Term",
-          searchItemValue: "Enter Search Term",
-        },
-      ],
-    });
+    if (val != null) {
+      this.setState({
+        searchText: val,
+        searchItems: [
+          {
+            searchItemLabel: "Enter Search Term",
+            searchItemValue: "Enter Search Term",
+          },
+        ],
+      });
+    }
   }
 
   setSearchTerm(val) {
@@ -121,23 +121,39 @@ class ApiContainer extends Component {
       .then((response) => {
         //var key = "9228";
         var pageId = Object.keys(response.data.query.pages)[0];
-        let textForSpeech = response.data.query.pages[pageId].extract.replace(
-          /=/g,
-          ""
-        );
-        console.log("getting data from axios", textForSpeech);
-        Speech.stop();
-        //To do run speak for each 3999 chars segment of the article
-        this.runSpeech(textForSpeech);
-        setTimeout(() => {
+        console.log("Page id: " + pageId);
+        console.log("Page type id: " + typeof pageId);
+        if (pageId != "-1") {
+          let textForSpeech = response.data.query.pages[pageId].extract.replace(
+            /=/g,
+            ""
+          );
+          console.log("getting data from axios", textForSpeech);
+          Speech.stop();
+          //To do run speak for each 3999 chars segment of the article
+          this.runSpeech(textForSpeech);
+
+          setTimeout(() => {
+            this.setState({
+              loading: false,
+              axiosData: response.data.query.pages[pageId].extract,
+            });
+          }, 2000);
+        } else {
           this.setState({
             loading: false,
-            axiosData: response.data.query.pages[pageId].extract,
+            searchItems: [
+              {
+                searchItemLabel: "Enter Search Term",
+                searchItemValue: "Enter Search Term",
+              },
+            ],
           });
-        }, 2000);
+        }
       })
       .catch((error) => {
         console.log(error);
+        Speech.stop();
       });
   };
 
@@ -185,7 +201,11 @@ class ApiContainer extends Component {
             placeholder="Search Term"
             placeholderTextColor="#483d8b"
             onChangeText={(searchText) => this.setSearchTerm(searchText)}
-            onEndEditing={(searchText) => searchItems[1].searchItemLabel}
+            onEndEditing={(searchText) =>
+              typeof searchItems !== "undefined"
+                ? searchItems[0].searchItemLabel
+                : ""
+            }
             value={this.state.searchText}
             underlineColor="purple"
           />
