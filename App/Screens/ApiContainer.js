@@ -39,8 +39,8 @@ class ApiContainer extends Component {
         searchText: val,
         searchItems: [
           {
-            searchItemLabel: "Enter Search Term",
-            searchItemValue: "Enter Search Term",
+            searchItemLabel: val,
+            searchItemValue: val,
           },
         ],
       });
